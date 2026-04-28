@@ -39,18 +39,18 @@ reset_timestep  0
 
 
 # equilibrate
-fix 1 all npt temp 300.0 300.0 0.1 iso 0.0 0.0 1.0
+fix 1 all npt temp 300.0 300.0 100.0 iso 0.0 0.0 1000.0
 run 10000 
 unfix 1
 
 
 # heat up
-fix 2 all npt temp 300.0 1473.0 0.1 iso 0.0 0.0 1.0
+fix 2 all npt temp 300.0 1473.0 100.0 iso 0.0 0.0 1000.0
 run 50000
 unfix 2
 
 # equilibrate and sampling
-fix 3 all npt temp 1273.0 1273.0 0.1 iso 0.0 0.0 1.0
+fix 3 all npt temp 1273.0 1273.0 100.0 iso 0.0 0.0 1000.0
 dump 		1 all custom 1000 dump.slag.lammpstrj id type q x y z
 run		1000000
 unfix		3
