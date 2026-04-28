@@ -6,10 +6,15 @@ atom_style      charge
 # lattice fcc 8.88
 
 # simulation box
-# region          box block 0 44.0 0 44.0 0 44.0
-# create_box      5 box
+region          box block 0 17.750683960000 0 17.750683960000 0 17.750683960000
+create_box      2 box
 
-read_data Al2O3.lmp
+create_atoms    1 random 261 45678 box overlap 1.5 maxtry 1000
+create_atoms    2 random 392 12345 box overlap 1.5 maxtry 1000
+
+mass 1   26.98153860
+mass 2   15.99900000
+
 
 set type 1 charge  1.4175
 set type 2 charge -0.945
@@ -33,13 +38,27 @@ thermo_style    custom step temp press vol density pe ke etotal
 
 
 # initial velocity and relaxation
-minimize        1.0e-4 1.0e-8 10000 100000
+minimize        1.0e-6 1.0e-8 10000 100000
+
+# 2. Soft relaxation (prevents explosions)
+fix 0 all nve/limit 0.1
+run 1000
+unfix 0
 velocity        all create 300.0 4928459 dist gaussian
+
+
+fix 2 all nve/limit 0.1             # Cap atom movement to 0.1 Angstrom/step
+fix 3 all temp/rescale 10 300.0 1473.0 10.0 1.0  # Force temperature rise
+dump 		1 all custom 1000 dump.preeq.lammpstrj id type q x y z
+run 20000
+unfix 2
+unfix 3
+
+
 reset_timestep  0
-
-
 # equilibrate
-fix 1 all npt temp 300.0 300.0 0.1 iso 0.0 0.0 1.0
+fix 1 all npt temp 300.0 300.0 100.0 iso 0.0 0.0 1000.0
+dump 		1 all custom 1000 dump.eq.lammpstrj id type q x y z
 run 10000 
 unfix 1
 
@@ -50,7 +69,7 @@ run 50000
 unfix 2
 
 # equilibrate and sampling
-fix 3 all npt temp 1273.0 1273.0 0.1 iso 0.0 0.0 1.0
+fix 3 all npt temp 1473.0 1473.0 0.1 iso 0.0 0.0 1.0
 dump 		1 all custom 1000 dump.slag.lammpstrj id type q x y z
 run		1000000
 unfix		3
