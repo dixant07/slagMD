@@ -1,0 +1,36 @@
+FINAL COORDINATION NUMBER RESULTS:
+Central Atom Type : 2 (Si)
+Neighbor Atom Type: 5
+Cutoff Radius     : 2.35 A
+Average CN        : 4.0356
+
+
+=======================================
+FINAL COORDINATION NUMBER RESULTS:
+Central Atom Type : 4 (Al)
+Neighbor Atom Type: 5
+Cutoff Radius     : 2.55 A
+Average CN        : 4.2257
+=======================================
+
+
+=======================================
+TOTAL SYSTEM DIFFUSION ANALYSIS:
+Slope of linear regime : 8.2806e-01 A^2/ps
+Total Diffusion (D_tot): 1.3801e-05 cm^2/s
+=======================================
+
+
+======================================================
+VISCOSITY RESULTS (Stokes-Einstein at 1823 K):
+======================================================
+Total System Viscosity (Bulk Flow):
+  eta = 0.0069 Pa.s
+  eta = 0.0691 Poise
+  
+  
+  
+====================================================
+Ionic Radii (from Shanon)
+Si4+(0.4 Å), Al3+(0.535 Å), Ca2+(1.0 Å), Mg2+(0.72 Å) and O2−(1.40 Å)
+

@@ -1,0 +1,9 @@
+*dump
+dump.*
+*.dump
+log.lammps
+*.lammpstrj
+log.*
+*.txt
+*.py
+*.zip

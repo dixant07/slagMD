@@ -1,0 +1,95 @@
+units           real
+dimension       3
+boundary        p p p
+atom_style      charge
+
+# simulation box
+region          box block 0 44.0 0 44.0 0 44.0
+create_box      5 box
+
+# atoms distribution (using overlap 1.5 to prevent explosions)
+create_atoms    1 random 1084  12345 box overlap 1.5 maxtry 1000
+create_atoms    2 random 644  23456 box overlap 1.5 maxtry 1000
+create_atoms    3 random 206  34567 box overlap 1.5 maxtry 1000
+create_atoms    4 random 596  45678 box overlap 1.5 maxtry 1000
+create_atoms    5 random 3472 56789 box overlap 1.5 maxtry 1000
+
+# masses and charges
+mass            1 40.078
+mass            2 28.085
+mass            3 24.305
+mass            4 26.982
+mass            5 15.999
+
+set type 1 charge  0.945
+set type 2 charge  1.890
+set type 3 charge  0.945
+set type 4 charge  1.4175
+set type 5 charge -0.945
+
+# potential
+pair_style      born/coul/long 8.0 10.0 
+kspace_style    pppm 1.0e-4
+
+# coefficients
+pair_coeff 1 1 0.092046 0.080000 2.344000 484.046367 0.0
+pair_coeff 1 2 0.072486 0.063000 1.892400 530.299498 0.0
+pair_coeff 1 3 0.092046 0.080000 2.066000 312.476577 0.0
+pair_coeff 1 4 0.085142 0.074000 1.957200 396.056095 0.0
+pair_coeff 1 5 0.204815 0.178000 2.993500 974.646272 0.0
+
+pair_coeff 2 2 0.052926 0.046000 1.440800 580.975430 0.0
+pair_coeff 2 3 0.072486 0.063000 1.614400 342.339245 0.0
+pair_coeff 2 4 0.065582 0.057000 1.505600 433.906477 0.0
+pair_coeff 2 5 0.185255 0.161000 2.541900 1067.792591 0.0
+
+pair_coeff 3 3 0.092046 0.080000 1.788000 201.720232 0.0
+pair_coeff 3 4 0.085142 0.074000 1.679200 255.674845 0.0
+pair_coeff 3 5 0.204815 0.178000 2.715500 629.185791 0.0
+
+pair_coeff 4 4 0.078239 0.068000 1.570400 324.062027 0.0
+pair_coeff 4 5 0.197912 0.172000 2.606700 797.495048 0.0
+
+pair_coeff 5 5 0.317586 0.276000 3.643000 1962.274140 0.0
+
+
+neighbor        2.0 bin
+neigh_modify    delay 0 every 1 check yes
+timestep        1.0
+thermo          1000
+thermo_style    custom step temp press vol density pe ke etotal
+
+
+# initial velocity and relaxation
+minimize        1.0e-4 1.0e-8 10000 100000
+velocity        all create 300.0 4928459 dist gaussian
+reset_timestep  0
+
+
+# heating for mixing
+fix		2 all nvt temp 300.0 6000.0 100.0
+run		600000
+unfix		2
+
+# equiblirate at 6000K
+fix		3 all nvt temp 6000.0 6000.0 100.0
+run		300000
+unfix		3
+
+# quench it
+fix		4 all nvt temp 6000.0 1893 100.0
+run		600000
+unfix		4
+
+# sampling
+fix		5 all nvt temp 1893 1893 100.0
+variable step equal step
+variable pxy equal pxy
+variable pxz equal pxz
+variable pyz equal pyz
+fix stress_dump all print 5 "${step} ${pxy} ${pxz} ${pyz}" file stress.txt screen no
+
+dump 		1 all custom 1000 dump.slag.lammpstrj id type q x y z
+run		3000000
+unfix		5
+unfix		stress_dump
