@@ -1,0 +1,52 @@
+Al2O3, first frame at 300K, Materials Project (POSCAR)
+=======================================
+FINAL COORDINATION NUMBER RESULTS:
+Central Atom Type : 1 (Al)
+Neighbor Atom Type: 2 (O)
+Cutoff Radius     : 2.55 A
+Average CN        : 6.0000
+=======================================
+
+=======================================
+FINAL COORDINATION NUMBER RESULTS:
+Central Atom Type : 2 (Al)
+Neighbor Atom Type: 1 (O)
+Cutoff Radius     : 2.55 A
+Average CN        : 4.0000
+=======================================
+
+
+Al2O3, first frame at 300K, Random Al and O positions
+=======================================
+FINAL COORDINATION NUMBER RESULTS:
+Central Atom Type : 1
+Neighbor Atom Type: 2
+Cutoff Radius     : 2.25 A
+Average CN        : 5.2069
+=======================================
+
+=======================================
+FINAL COORDINATION NUMBER RESULTS:
+Central Atom Type : 2
+Neighbor Atom Type: 1
+Cutoff Radius     : 2.25 A
+Average CN        : 3.4668
+=======================================
+
+
+Al2O3, Full simulation Average frame at 300K, Random Al and O positions
+=======================================
+FINAL COORDINATION NUMBER RESULTS:
+Central Atom Type : 1
+Neighbor Atom Type: 2
+Cutoff Radius     : 2.55 A
+Average CN        : 6.0300
+=======================================
+
+=======================================
+FINAL COORDINATION NUMBER RESULTS:
+Central Atom Type : 2
+Neighbor Atom Type: 1
+Cutoff Radius     : 2.55 A
+Average CN        : 4.0149
+=======================================
