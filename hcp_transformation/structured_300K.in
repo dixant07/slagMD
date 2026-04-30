@@ -1,0 +1,42 @@
+units           real
+dimension       3
+boundary        p p p
+atom_style      charge
+
+# lattice fcc 8.88
+
+# simulation box
+# region          box block 0 44.0 0 44.0 0 44.0
+# create_box      5 box
+
+read_data Al2O3.lmp
+
+set type 1 charge  1.4175
+set type 2 charge -0.945
+
+# potential
+pair_style      born/coul/long 8.0 10.0 
+kspace_style    pppm 1.0e-4
+
+# coefficients
+pair_coeff 1 1 0.078239 0.068000 1.570400 324.062027 0.0
+pair_coeff 1 2 0.197912 0.172000 2.606700 797.495048 0.0
+pair_coeff 2 2 0.317586 0.276000 3.643000 1962.274140 0.0
+
+
+neighbor        2.0 bin
+neigh_modify    delay 0 every 1 check yes
+timestep        1.0
+thermo          1000
+thermo_style    custom step temp press vol density pe ke etotal
+
+
+# initial velocity and relaxation
+minimize        1.0e-4 1.0e-8 10000 100000
+velocity        all create 300.0 4928459 dist gaussian
+reset_timestep  0
+
+
+dump 		1 all custom 1000 dump.structured_300K.lammpstrj id type q x y z
+run	0
+# write_dump all atom dump.structured_300K.lammpstrj
